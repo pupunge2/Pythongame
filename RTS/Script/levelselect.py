@@ -11,6 +11,3 @@ def display():
 
 def mouse_left_up():
     pass
-
-def mouse_right_up():
-    pass

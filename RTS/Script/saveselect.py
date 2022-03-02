@@ -23,4 +23,9 @@ def display():
     pygame.display.flip()
 
 def mouse_left_up():
-    pass
+    mouse = pygame.mouse.get_pos()
+
+    if var.state == '':
+        for i in range(4):
+            if physics.point_inside_rect_list(mouse[0], mouse[1], UI.save_file[i]):
+                pass

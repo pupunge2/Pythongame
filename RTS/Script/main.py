@@ -9,6 +9,7 @@ import physics
 
 import title
 import saveselect
+import levelselect
 import field
 import editor
 
@@ -30,6 +31,9 @@ def loop():
 
     elif var.scene == 'save_select':
         saveselect.loop()
+
+    elif var.scene == 'level_select':
+        levelselect.loop()
 
 def set_font():
     var.Font.title = pygame.font.SysFont(None, 60)
