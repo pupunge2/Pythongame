@@ -15,7 +15,7 @@ def loop():
 
 def display():
     var.screen.fill(const.Color.white)
-    var.screen.blit(var.Font.title.render('Save File Select', True, const.Color.black), UI.title_text)
+    var.screen.blit(var.Font.title.render('Select Save File', True, const.Color.black), UI.title_text)
 
     pygame.draw.rect(var.screen, const.Color.black, UI.rect, 2)
     
@@ -33,4 +33,6 @@ def mouse_left_up():
     if var.state == '':
         for i in range(4):
             if physics.point_inside_rect_list(mouse[0], mouse[1], UI.save_file[i]):
-                pass
+                if var.Save.data[i]['new'] == True:
+                    var.Player_Ready.level_open.append(1)
+                    var.scene = 'level_select'

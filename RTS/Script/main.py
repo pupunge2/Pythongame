@@ -37,6 +37,9 @@ def loop():
     elif var.scene == 'level_select':
         levelselect.loop()
 
+    elif var.scene == 'editor':
+        editor.loop()
+
 def set_font():
     var.Font.title = pygame.font.SysFont(None, 60)
     var.Font.main_1 = pygame.font.SysFont(None, 28)
@@ -47,6 +50,7 @@ def image_load():
 def input_handle():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            save.save_to_file()
             sys.exit()
 
         if event.type == pygame.MOUSEBUTTONUP:
@@ -57,6 +61,19 @@ def input_handle():
             elif var.scene == 'save_select':
                 if event.button == 1:
                     saveselect.mouse_left_up()
+
+            elif var.scene == 'level_select':
+                if event.button == 1:
+                    levelselect.mouse_left_up()
+
+            elif var.scene == 'editor':
+                if event.button == 1:
+                    editor.mouse_left_up()
+        
+        elif event.type == pygame.KEYDOWN:
+            if var.scene == 'editor':
+                key = event.key
+                editor.key_down(key)
 
 init()
 

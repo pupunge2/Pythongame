@@ -20,8 +20,44 @@ def save_init():
     else:
         load()
 
-def save():
-    pass
+def save_to_file():
+    f = open('../Save/save.txt', 'w')
+    f.seek(0)
+    
+    for i in range(4):
+        tmp_string = ''
+
+        if var.Save.data[i]['new'] == True:
+            tmp_string += 'new:True|'
+            
+        else:
+            tmp_string += 'new:False|'
+
+        tmp_string += 'level:'
+
+        if len(var.Save.data[i]['level']) == 0:
+            tmp_string += 'None|'
+
+        else:
+            tmp_string += str(var.Save.data[i]['level']) + '|'
+
+        tmp_string += 'card:'
+
+        if len(var.Save.data[i]['card']) == 0:
+            tmp_string += 'None|'
+        
+        else:
+            tmp_string += str(var.Save.data[i]['card']) + '|'
+
+        tmp_string += 'upgrade:'
+
+        if len(var.Save.data[i]['upgrade']) == 0:
+            tmp_string += 'None'
+
+        else:
+            tmp_string += str(var.Save.data[i]['upgrade'])
+
+        f.write(tmp_string + '\n')
 
 def load():
     f = open('../Save/save.txt', 'r')

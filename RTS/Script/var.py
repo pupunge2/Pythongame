@@ -19,7 +19,16 @@ class Field():
     pass
 
 class Player_Ready():
-    pass
+    level_cleared = []
+    level_open = []
+    level_lock = []
+    card = []
+    upgrade = []
 
 class Player():
+    pass
+
+class Editor():
+    map_name_edit = False
+    map_name = 'New Map'
     pass
