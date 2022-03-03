@@ -21,6 +21,8 @@ def init():
     pygame.font.init()
     set_font()
     image_load()
+    save.save_init()
+    save.load()
 
 def loop():
     clock.tick(var.FPS)
@@ -37,6 +39,7 @@ def loop():
 
 def set_font():
     var.Font.title = pygame.font.SysFont(None, 60)
+    var.Font.main_1 = pygame.font.SysFont(None, 28)
 
 def image_load():
     pass

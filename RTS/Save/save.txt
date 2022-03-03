@@ -1,0 +1,4 @@
+new:True|level:None|card:None|upgrade:None
+new:True|level:None|card:None|upgrade:None
+new:True|level:None|card:None|upgrade:None
+new:True|level:None|card:None|upgrade:None

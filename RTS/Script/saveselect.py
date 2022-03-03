@@ -7,6 +7,8 @@ class UI():
     title_text = [8, 8]
     rect = [160, 160, 960, 400]
     save_file = [[160, 160, 960, 80], [160, 240, 960, 80], [160, 320, 960, 80], [160, 400, 960, 80]]
+    save_text_1 = [[168, 168], [168, 248], [168, 328], [168, 408]]
+    save_text_2 = [[168, 208], [168, 288], [168, 368], [168, 408]]
 
 def loop():
     display()
@@ -19,6 +21,9 @@ def display():
     
     for i in range(4):
         pygame.draw.rect(var.screen, const.Color.black, UI.save_file[i], 2)
+        
+        if var.Save.data[i]['new'] == True:
+            var.screen.blit(var.Font.main_1.render('New', True, const.Color.black), UI.save_text_1[i])
 
     pygame.display.flip()
 
