@@ -1,4 +1,5 @@
 import var
+import img
 import const
 import pygame
 import physics
@@ -7,8 +8,8 @@ class UI():
     title_text = [8, 8]
 
     class Upper_Bar():
-        new_button = [0, 0, 80, 80]
-        save_button = [80, 0, 80, 80]
+        new_button = [0, 0, 40, 40]
+        save_button = [40, 0, 40, 40]
 
     class Start():
         title_text = [168, 168]
@@ -24,6 +25,9 @@ def loop():
 
 def display():
     var.screen.fill(const.Color.white)
+
+    var.screen.blit(img.Button.new_map, UI.Upper_Bar.new_button[:2])
+    var.screen.blit(img.Button.save, UI.Upper_Bar.save_button[:2])
 
     if var.state == 'start':
         var.screen.blit(var.Font.title.render('New Map', True, const.Color.black), UI.Start.title_text)
