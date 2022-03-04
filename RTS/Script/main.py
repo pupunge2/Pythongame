@@ -47,6 +47,8 @@ def set_font():
 def image_load():
     img.Button.new_map = pygame.image.load('../Image/NewMap.png')
     img.Button.save = pygame.image.load('../Image/Save.png')
+    img.Button.exit = pygame.image.load('../Image/Exit.png')
+    img.Button.done = pygame.image.load('../Image/Done.png')
 
 def input_handle():
     for event in pygame.event.get():

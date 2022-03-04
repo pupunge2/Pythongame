@@ -48,6 +48,7 @@ def mouse_left_up():
 
         elif physics.point_inside_rect_list(mouse[0], mouse[1], UI.editor_button):
             var.scene = 'editor'
+            var.Editor.opened = False
 
         elif physics.point_inside_rect_list(mouse[0], mouse[1], UI.custom_button):
             var.scene = 'custom'

@@ -31,4 +31,6 @@ class Player():
 class Editor():
     map_name_edit = False
     map_name = 'New Map'
-    pass
+    opened = False
+
+    temp_data = []
