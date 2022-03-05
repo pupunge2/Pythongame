@@ -37,6 +37,9 @@ def loop():
     elif var.scene == 'level_select':
         levelselect.loop()
 
+    elif var.scene == 'field':
+        field.loop()
+
     elif var.scene == 'editor':
         editor.loop()
 
@@ -45,10 +48,13 @@ def set_font():
     var.Font.main_1 = pygame.font.SysFont(None, 28)
 
 def image_load():
-    img.Button.new_map = pygame.image.load('../Image/NewMap.png')
-    img.Button.save = pygame.image.load('../Image/Save.png')
-    img.Button.exit = pygame.image.load('../Image/Exit.png')
-    img.Button.done = pygame.image.load('../Image/Done.png')
+    img.Button.new_map = pygame.image.load('../Image/Button/NewMap.png')
+    img.Button.save = pygame.image.load('../Image/Button/Save.png')
+    img.Button.exit = pygame.image.load('../Image/Button/Exit.png')
+    img.Button.done = pygame.image.load('../Image/Button/Done.png')
+    img.Level.cleared = pygame.image.load('../Image/Level/LevelCleared.png')
+    img.Level.unlock = pygame.image.load('../Image/Level/LevelUnlock.png')
+    img.Level.lock = pygame.image.load('../Image/Level/LevelLock.png')
 
 def input_handle():
     for event in pygame.event.get():

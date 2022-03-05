@@ -3,3 +3,8 @@ class Button():
     save = None
     exit = None
     done = None
+
+class Level():
+    lock = None
+    unlock = None
+    cleared = None

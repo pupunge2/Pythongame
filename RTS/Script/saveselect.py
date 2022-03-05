@@ -34,5 +34,10 @@ def mouse_left_up():
         for i in range(4):
             if physics.point_inside_rect_list(mouse[0], mouse[1], UI.save_file[i]):
                 if var.Save.data[i]['new'] == True:
-                    var.Player_Ready.level_open.append(1)
+                    var.Player_Ready.level_unlock.append(1)
+                    
+                    for i in range(1, len(const.Level.level)):
+                        var.Player_Ready.level_lock.append(i)
+
                     var.scene = 'level_select'
+                    var.state = ''

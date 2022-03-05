@@ -1,7 +1,11 @@
+import img
 import var
 import const
 import pygame
 import physics
+
+class UI():
+    pass
 
 def loop():
     display()

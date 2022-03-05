@@ -20,7 +20,7 @@ class Field():
 
 class Player_Ready():
     level_cleared = []
-    level_open = []
+    level_unlock = []
     level_lock = []
     card = []
     upgrade = []
