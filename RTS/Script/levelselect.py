@@ -42,17 +42,17 @@ def mouse_left_up():
     mouse = pygame.mouse.get_pos()
 
     if var.state == '':
-        for i in range(var.Player_Ready.level_cleared):
-            level = var.Player_Ready.level_cleared[i][0]
-            level_rect = var.Player_Ready.level_cleared[level][1:3] + [80, 80]
+        for i in range(len(var.Player_Ready.level_cleared)):
+            level = var.Player_Ready.level_cleared[i]
+            level_rect = const.Level.level[level][1:3] + [80, 80]
             
             if physics.point_inside_rect_list(mouse[0], mouse[1], level_rect):
                 var.scene = 'field'
                 var.state = ''
 
-        for i in range(var.Player_Ready.level_unlock):
-            level = var.Player_Ready.level_unlock[i][0]
-            level_rect = var.Player_Ready.level_unlock[level][1:3] + [80, 80]
+        for i in range(len(var.Player_Ready.level_unlock)):
+            level = var.Player_Ready.level_unlock[i]
+            level_rect = const.Level.level[level][1:3] + [80, 80]
             
             if physics.point_inside_rect_list(mouse[0], mouse[1], level_rect):
                 var.scene = 'field'

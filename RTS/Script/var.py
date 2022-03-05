@@ -34,3 +34,7 @@ class Editor():
     opened = False
 
     temp_data = []
+
+    terrain = []
+    floor = []
+    unit = []
