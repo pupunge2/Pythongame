@@ -8,3 +8,6 @@ class Level():
     lock = None
     unlock = None
     cleared = None
+
+class Terrain():
+    tile = {}

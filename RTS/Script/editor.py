@@ -47,7 +47,15 @@ def display():
         var.screen.blit(img.Button.done, UI.Start.done_button)
 
     if var.state == 'edit':
-        pass
+        for i in range(var.Editor.map_size):
+            for j in range(var.Editor.map_size):
+                tmp_img = pygame.transform.scale(img.Terrain.tile[var.Editor.terrain[i][j]], (40, 40))
+                var.screen.blit(tmp_img, [240 + 40 * j, 40 + 40 * i])
+
+        pygame.draw.rect(var.screen, const.Color.white, UI.Main_Editor.minimap)
+        pygame.draw.rect(var.screen, const.Color.white, UI.Main_Editor.left_bar)
+        pygame.draw.rect(var.screen, const.Color.black, UI.Main_Editor.minimap, 2)
+        pygame.draw.rect(var.screen, const.Color.black, UI.Main_Editor.left_bar, 2)
 
     pygame.display.flip()
 
@@ -77,6 +85,7 @@ def mouse_left_up():
 
         elif physics.point_inside_rect_list(mouse[0], mouse[1], UI.Start.done_button):
             var.state = 'edit'
+            map_generate()
 
 def key_down(key):
     if var.state == 'start':
@@ -91,3 +100,15 @@ def key_down(key):
             elif key == 8:
                 if len(var.Editor.map_name) > 0:
                     var.Editor.map_name = var.Editor.map_name[:len(var.Editor.map_name) - 1]
+
+def map_generate():
+    var.Editor.terrain = []
+
+    for i in range(var.Editor.map_size):
+        temp = []
+
+        for j in range(var.Editor.map_size):
+            temp.append(101)
+
+        var.Editor.terrain.append(temp)
+        temp = []

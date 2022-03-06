@@ -52,9 +52,12 @@ def image_load():
     img.Button.save = pygame.image.load('../Image/Button/Save.png')
     img.Button.exit = pygame.image.load('../Image/Button/Exit.png')
     img.Button.done = pygame.image.load('../Image/Button/Done.png')
+
     img.Level.cleared = pygame.image.load('../Image/Level/LevelCleared.png')
     img.Level.unlock = pygame.image.load('../Image/Level/LevelUnlock.png')
     img.Level.lock = pygame.image.load('../Image/Level/LevelLock.png')
+
+    img.Terrain.tile[101] = pygame.image.load('../Image/Terrain/Grass01.png')
 
 def input_handle():
     for event in pygame.event.get():

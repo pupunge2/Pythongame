@@ -31,7 +31,8 @@ class Player():
 class Editor():
     map_name_edit = False
     map_name = 'New Map'
-    opened = False
+    map_theme = 'grass'
+    map_size = 64
 
     temp_data = []
 
