@@ -23,6 +23,10 @@ class UI():
         exit_button = [1080, 160, 40, 40]
         done_button = [1080, 520, 40, 40]
 
+    class Main_Editor():
+        minimap = [0, 40, 240, 240]
+        left_bar = [0, 280, 240, 400]
+
 def loop():
     display()
 
@@ -41,6 +45,9 @@ def display():
         
         var.screen.blit(img.Button.exit, UI.Start.exit_button)
         var.screen.blit(img.Button.done, UI.Start.done_button)
+
+    if var.state == 'edit':
+        pass
 
     pygame.display.flip()
 
@@ -67,6 +74,9 @@ def mouse_left_up():
 
         elif physics.point_inside_rect_list(mouse[0], mouse[1], UI.Start.exit_button):
             var.state = ''
+
+        elif physics.point_inside_rect_list(mouse[0], mouse[1], UI.Start.done_button):
+            var.state = 'edit'
 
 def key_down(key):
     if var.state == 'start':
