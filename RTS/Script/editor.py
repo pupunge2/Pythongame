@@ -49,8 +49,7 @@ def display():
     if var.state == 'edit':
         for i in range(var.Editor.map_size):
             for j in range(var.Editor.map_size):
-                tmp_img = pygame.transform.scale(img.Terrain.tile[var.Editor.terrain[i][j]], (40, 40))
-                var.screen.blit(tmp_img, [240 + 40 * j, 40 + 40 * i])
+                var.screen.blit(img.Terrain.tile[var.Editor.floor[i][j]], [240 + 40 * j, 40 + 40 * i])
 
         pygame.draw.rect(var.screen, const.Color.white, UI.Main_Editor.minimap)
         pygame.draw.rect(var.screen, const.Color.white, UI.Main_Editor.left_bar)
@@ -87,6 +86,10 @@ def mouse_left_up():
             var.state = 'edit'
             map_generate()
 
+    elif var.state == 'edit':
+        if physics.point_inside_rect_list(mouse[0], mouse[1], UI.Upper_Bar.save_button):
+            save_map()
+
 def key_down(key):
     if var.state == 'start':
         if var.Editor.map_name_edit == True:
@@ -103,6 +106,7 @@ def key_down(key):
 
 def map_generate():
     var.Editor.terrain = []
+    var.Editor.floor = []
 
     for i in range(var.Editor.map_size):
         temp = []
@@ -110,5 +114,33 @@ def map_generate():
         for j in range(var.Editor.map_size):
             temp.append(101)
 
-        var.Editor.terrain.append(temp)
+        var.Editor.floor.append(temp)
+
+    for i in range(var.Editor.map_size):
         temp = []
+
+        for j in range(var.Editor.map_size):
+            temp.append(0)
+
+        var.Editor.terrain.append(temp)
+
+def save_map():
+    file_directory = '../Map/' + str(var.Editor.map_name) + '.desmap'
+    f = open(file_directory, 'w')
+
+    f.write('Terrain\n')
+
+    for i in range(len(var.Editor.terrain)):
+        f.write(str(var.Editor.terrain[i]) + '\n')
+
+    f.write('Floor\n')
+
+    for i in range(len(var.Editor.floor)):
+        f.write(str(var.Editor.floor[i]) + '\n')
+
+    f.write('Unit\n')
+
+    for i in range(len(var.Editor.unit)):
+        f.write(str(var.Editor.unit[i] + '\n'))
+
+    f.write('End\n')
