@@ -1,6 +1,7 @@
 class Button():
     new_map = None
     save = None
+    load = None
     exit = None
     done = None
 
