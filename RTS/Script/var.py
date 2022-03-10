@@ -40,8 +40,6 @@ class Editor():
     team_mode = 1
     selected_unit = -1
 
-    temp_data = []
-
     terrain = []
     floor = []
     unit = []
