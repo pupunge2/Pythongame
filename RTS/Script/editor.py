@@ -12,6 +12,7 @@ class UI():
         load_button = [40, 0, 40, 40]
         save_button = [80, 0, 40, 40]
         team_button = [[120, 0, 40, 40], [160, 0, 40, 40], [200, 0, 40, 40], [240, 0, 40, 40]]
+        close_button = [280, 0, 40, 40]
         team_text = [[132, 12], [172, 12], [212, 12], [252, 12]]
         exit_button = [1240, 0, 40, 40]
 
@@ -52,6 +53,7 @@ def display():
     var.screen.blit(img.Button.new_map, UI.Upper_Bar.new_button[:2])
     var.screen.blit(img.Button.save, UI.Upper_Bar.save_button[:2])
     var.screen.blit(img.Button.load, UI.Upper_Bar.load_button[:2])
+    var.screen.blit(img.Button.exit, UI.Upper_Bar.close_button[:2])
     var.screen.blit(img.Button.exit, UI.Upper_Bar.exit_button[:2])
 
     for i in range(4):
@@ -74,8 +76,6 @@ def display():
                 var.screen.blit(img.Terrain.tile[var.Editor.floor[i][j]], [UI.Main_Editor.field_area[0] + 40 * j - var.Editor.camera[0], UI.Main_Editor.field_area[1] + 40 * i - var.Editor.camera[1]])
 
         for i in range(len(var.Editor.unit)):
-            #print(len(var.Editor.unit))
-            #print([var.Editor.unit[i][1][0] - var.Editor.unit[i][2][0] // 2, var.Editor.unit[i][1][1]- var.Editor.unit[i][2][1] // 2])
             var.screen.blit(img.Unit.unit[var.Editor.unit[i][0]], [var.Editor.unit[i][1][0] - var.Editor.unit[i][2][0] // 2 - var.Editor.camera[0] + UI.Main_Editor.field_area[0], var.Editor.unit[i][1][1]- var.Editor.unit[i][2][1] // 2- var.Editor.camera[1] + UI.Main_Editor.field_area[1]])
 
         pygame.draw.rect(var.screen, const.Color.white, UI.Main_Editor.minimap)
@@ -148,6 +148,17 @@ def mouse_left_up():
     elif var.state == 'edit':
         if physics.point_inside_rect_list(mouse[0], mouse[1], UI.Upper_Bar.save_button):
             save_map()
+
+        elif physics.point_inside_rect_list(mouse[0], mouse[1], UI.Upper_Bar.close_button):
+            var.state = ''
+            var.Editor.map_name = ''
+            var.Editor.map_name_edit = False
+            var.Editor.terrain = []
+            var.Editor.floor = []
+            var.Editor.unit = []
+            var.Editor.camera = [0, 0]
+            var.Editor.map_theme = 'grass'
+            var.Editor.map_size = 64
 
         for i in range(len(const.Editor.unit_list)):
             temp_rect = [UI.Main_Editor.left_bar[0] + 40 * (i % 6), UI.Main_Editor.left_bar[1] + 40 * (i // 6), 40, 40]
@@ -288,6 +299,8 @@ def load_map(name):
         file_contents.append(line)
 
     if len(file_contents) == 0:
+        var.Editor.map_theme = 'grass'
+        var.Editor.map_size = 64
         map_generate()
         return
 
