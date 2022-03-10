@@ -8,6 +8,7 @@ class UI():
     title_text = [8, 8]
 
     class Upper_Bar():
+        rect = [0, 0, 1280, 40]
         new_button = [0, 0, 40, 40]
         load_button = [40, 0, 40, 40]
         save_button = [80, 0, 40, 40]
@@ -15,6 +16,9 @@ class UI():
         close_button = [280, 0, 40, 40]
         team_text = [[132, 12], [172, 12], [212, 12], [252, 12]]
         exit_button = [1240, 0, 40, 40]
+
+    class Lower_Bar():
+        rect = [0, 680, 1280, 40]
 
     class Start():
         title_text = [168, 168]
@@ -41,7 +45,7 @@ class UI():
         field_area = [240, 40, 1040, 680]
 
     class Misc():
-        side_rect = [0, 0, 20, 20]
+        team_rect = [0, 0, 20, 20]
 
 def loop():
     camera_move()
@@ -50,16 +54,7 @@ def loop():
 def display():
     var.screen.fill(const.Color.white)
 
-    var.screen.blit(img.Button.new_map, UI.Upper_Bar.new_button[:2])
-    var.screen.blit(img.Button.save, UI.Upper_Bar.save_button[:2])
-    var.screen.blit(img.Button.load, UI.Upper_Bar.load_button[:2])
-    var.screen.blit(img.Button.exit, UI.Upper_Bar.close_button[:2])
-    var.screen.blit(img.Button.exit, UI.Upper_Bar.exit_button[:2])
-
-    for i in range(4):
-        pygame.draw.rect(var.screen, const.Color.black, UI.Upper_Bar.team_button[i], 4)
-        var.screen.blit(var.Font.main_1.render(str(i + 1), True, const.Color.black), UI.Upper_Bar.team_text[i])
-
+    # Start & Load
     if var.state == 'start':
         var.screen.blit(var.Font.title.render('New Map', True, const.Color.black), UI.Start.title_text)
         pygame.draw.rect(var.screen, const.Color.black, UI.Start.rect, 2)
@@ -69,6 +64,16 @@ def display():
         var.screen.blit(img.Button.exit, UI.Start.exit_button)
         var.screen.blit(img.Button.done, UI.Start.done_button)
 
+    if var.state == 'load':
+        var.screen.blit(var.Font.title.render('Open', True, const.Color.black), UI.Start.title_text)
+        pygame.draw.rect(var.screen, const.Color.black, UI.Start.rect, 2)
+        pygame.draw.rect(var.screen, const.Color.black, UI.Start.name, 2)
+        var.screen.blit(var.Font.title.render(str(var.Editor.map_name), True, const.Color.black), UI.Start.name_text)
+        
+        var.screen.blit(img.Button.exit, UI.Start.exit_button)
+        var.screen.blit(img.Button.done, UI.Start.done_button)
+
+    # Edit
     if var.state == 'edit':
         # Field
         for i in range(var.Editor.map_size):
@@ -90,14 +95,20 @@ def display():
             if const.Editor.unit_list[i] == var.Editor.selected_unit:
                 pygame.draw.rect(var.screen, const.Color.black, [UI.Main_Editor.left_bar[0] + 40 * (i % 6), UI.Main_Editor.left_bar[1] + 40 * (i // 6), 40, 40], 2)
 
-    if var.state == 'load':
-        var.screen.blit(var.Font.title.render('Open', True, const.Color.black), UI.Start.title_text)
-        pygame.draw.rect(var.screen, const.Color.black, UI.Start.rect, 2)
-        pygame.draw.rect(var.screen, const.Color.black, UI.Start.name, 2)
-        var.screen.blit(var.Font.title.render(str(var.Editor.map_name), True, const.Color.black), UI.Start.name_text)
-        
-        var.screen.blit(img.Button.exit, UI.Start.exit_button)
-        var.screen.blit(img.Button.done, UI.Start.done_button)
+    # Upper bar
+    pygame.draw.rect(var.screen, const.Color.white, UI.Upper_Bar.rect)
+    var.screen.blit(img.Button.new_map, UI.Upper_Bar.new_button[:2])
+    var.screen.blit(img.Button.save, UI.Upper_Bar.save_button[:2])
+    var.screen.blit(img.Button.load, UI.Upper_Bar.load_button[:2])
+    var.screen.blit(img.Button.exit, UI.Upper_Bar.close_button[:2])
+    var.screen.blit(img.Button.exit, UI.Upper_Bar.exit_button[:2])
+
+    for i in range(4):
+        pygame.draw.rect(var.screen, const.Color.black, UI.Upper_Bar.team_button[i], 4)
+        var.screen.blit(var.Font.main_1.render(str(i + 1), True, const.Color.black), UI.Upper_Bar.team_text[i])
+
+    # Lower bar
+    pygame.draw.rect(var.screen, const.Color.white, UI.Lower_Bar.rect)
 
     pygame.display.flip()
 
@@ -168,7 +179,6 @@ def mouse_left_up():
 
         if physics.point_inside_rect_list(mouse[0], mouse[1], UI.Main_Editor.field_area):
             click_field_pos = [mouse[0] - UI.Main_Editor.field_area[0] + var.Editor.camera[0], mouse[1] - UI.Main_Editor.field_area[1] + var.Editor.camera[1]]
-            print(click_field_pos)
 
             if var.Editor.selected_unit != -1:
                 size = [const.Unit.size[var.Editor.selected_unit][0], const.Unit.size[var.Editor.selected_unit][1]]
@@ -348,7 +358,6 @@ def load_map(name):
             length = len(temp_str)
             temp_str = temp_str[1:length - 2]
             temp_list = temp_str.split(',')
-            print(temp_list)
 
             temp_list[0] = int(temp_list[0])
             temp_list[1] = temp_list[1][2:len(temp_list[1])]
