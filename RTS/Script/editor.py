@@ -11,6 +11,8 @@ class UI():
         new_button = [0, 0, 40, 40]
         load_button = [40, 0, 40, 40]
         save_button = [80, 0, 40, 40]
+        team_button = [[120, 0, 40, 40], [160, 0, 40, 40], [200, 0, 40, 40], [240, 0, 40, 40]]
+        team_text = [[132, 12], [172, 12], [212, 12], [252, 12]]
         exit_button = [1240, 0, 40, 40]
 
     class Start():
@@ -35,8 +37,13 @@ class UI():
     class Main_Editor():
         minimap = [0, 40, 240, 240]
         left_bar = [0, 280, 240, 400]
+        field_area = [240, 40, 1040, 680]
+
+    class Misc():
+        side_rect = [0, 0, 20, 20]
 
 def loop():
+    camera_move()
     display()
 
 def display():
@@ -46,6 +53,10 @@ def display():
     var.screen.blit(img.Button.save, UI.Upper_Bar.save_button[:2])
     var.screen.blit(img.Button.load, UI.Upper_Bar.load_button[:2])
     var.screen.blit(img.Button.exit, UI.Upper_Bar.exit_button[:2])
+
+    for i in range(4):
+        pygame.draw.rect(var.screen, const.Color.black, UI.Upper_Bar.team_button[i], 4)
+        var.screen.blit(var.Font.main_1.render(str(i + 1), True, const.Color.black), UI.Upper_Bar.team_text[i])
 
     if var.state == 'start':
         var.screen.blit(var.Font.title.render('New Map', True, const.Color.black), UI.Start.title_text)
@@ -57,14 +68,27 @@ def display():
         var.screen.blit(img.Button.done, UI.Start.done_button)
 
     if var.state == 'edit':
+        # Field
         for i in range(var.Editor.map_size):
             for j in range(var.Editor.map_size):
-                var.screen.blit(img.Terrain.tile[var.Editor.floor[i][j]], [240 + 40 * j, 40 + 40 * i])
+                var.screen.blit(img.Terrain.tile[var.Editor.floor[i][j]], [UI.Main_Editor.field_area[0] + 40 * j - var.Editor.camera[0], UI.Main_Editor.field_area[1] + 40 * i - var.Editor.camera[1]])
+
+        for i in range(len(var.Editor.unit)):
+            #print(len(var.Editor.unit))
+            #print([var.Editor.unit[i][1][0] - var.Editor.unit[i][2][0] // 2, var.Editor.unit[i][1][1]- var.Editor.unit[i][2][1] // 2])
+            var.screen.blit(img.Unit.unit[var.Editor.unit[i][0]], [var.Editor.unit[i][1][0] - var.Editor.unit[i][2][0] // 2 - var.Editor.camera[0] + UI.Main_Editor.field_area[0], var.Editor.unit[i][1][1]- var.Editor.unit[i][2][1] // 2- var.Editor.camera[1] + UI.Main_Editor.field_area[1]])
 
         pygame.draw.rect(var.screen, const.Color.white, UI.Main_Editor.minimap)
         pygame.draw.rect(var.screen, const.Color.white, UI.Main_Editor.left_bar)
         pygame.draw.rect(var.screen, const.Color.black, UI.Main_Editor.minimap, 2)
         pygame.draw.rect(var.screen, const.Color.black, UI.Main_Editor.left_bar, 2)
+
+        # Left bar
+        for i in range(len(const.Editor.unit_list)):
+            var.screen.blit(img.Unit.unit[const.Editor.unit_list[i]], [UI.Main_Editor.left_bar[0] + 40 * (i % 6), UI.Main_Editor.left_bar[1] + 40 * (i // 6)])
+
+            if const.Editor.unit_list[i] == var.Editor.selected_unit:
+                pygame.draw.rect(var.screen, const.Color.black, [UI.Main_Editor.left_bar[0] + 40 * (i % 6), UI.Main_Editor.left_bar[1] + 40 * (i // 6), 40, 40], 2)
 
     if var.state == 'load':
         var.screen.blit(var.Font.title.render('Open', True, const.Color.black), UI.Start.title_text)
@@ -125,6 +149,31 @@ def mouse_left_up():
         if physics.point_inside_rect_list(mouse[0], mouse[1], UI.Upper_Bar.save_button):
             save_map()
 
+        for i in range(len(const.Editor.unit_list)):
+            temp_rect = [UI.Main_Editor.left_bar[0] + 40 * (i % 6), UI.Main_Editor.left_bar[1] + 40 * (i // 6), 40, 40]
+            
+            if physics.point_inside_rect_list(mouse[0], mouse[1], temp_rect):
+                var.Editor.selected_unit = const.Editor.unit_list[i]
+
+        if physics.point_inside_rect_list(mouse[0], mouse[1], UI.Main_Editor.field_area):
+            click_field_pos = [mouse[0] - UI.Main_Editor.field_area[0] + var.Editor.camera[0], mouse[1] - UI.Main_Editor.field_area[1] + var.Editor.camera[1]]
+            print(click_field_pos)
+
+            if var.Editor.selected_unit != -1:
+                size = [const.Unit.size[var.Editor.selected_unit][0], const.Unit.size[var.Editor.selected_unit][1]]
+                unit_add = True
+
+                for i in range(len(var.Editor.unit)):
+                    unit_position = [var.Editor.unit[i][1][0], var.Editor.unit[i][1][1]]
+                    unit_size = [var.Editor.unit[i][2][0], var.Editor.unit[i][2][1]]
+
+                    if physics.two_circle_overlap(click_field_pos[0], click_field_pos[1], unit_position[0], unit_position[1], const.Unit.size[var.Editor.selected_unit][0] // 2, unit_size[0] // 2):
+                        unit_add = False
+                        break
+                
+                if unit_add == True:
+                    var.Editor.unit.append([var.Editor.selected_unit, [click_field_pos[0], click_field_pos[1]], [size[0], size[1]]])
+
 def key_down(key):
     if var.state == 'start' or var.state == 'load':
         if var.Editor.map_name_edit == True:
@@ -138,6 +187,46 @@ def key_down(key):
             elif key == 8:
                 if len(var.Editor.map_name) > 0:
                     var.Editor.map_name = var.Editor.map_name[:len(var.Editor.map_name) - 1]
+
+    elif var.state == 'edit':
+        if key == 119:
+            var.Editor.key_pressed[0] = True
+
+        elif key == 97:
+            var.Editor.key_pressed[1] = True
+
+        elif key == 100:
+            var.Editor.key_pressed[2] = True
+
+        elif key == 115:
+            var.Editor.key_pressed[3] = True
+
+def key_up(key):
+    if var.state == 'edit':
+        if key == 119:
+            var.Editor.key_pressed[0] = False
+
+        elif key == 97:
+            var.Editor.key_pressed[1] = False
+
+        elif key == 100:
+            var.Editor.key_pressed[2] = False
+
+        elif key == 115:
+            var.Editor.key_pressed[3] = False
+
+def camera_move():
+    if var.Editor.key_pressed[0] == True:
+        var.Editor.camera[1] -= 3
+
+    if var.Editor.key_pressed[1] == True:
+        var.Editor.camera[0] -= 3
+
+    if var.Editor.key_pressed[2] == True:
+        var.Editor.camera[0] += 3
+
+    if var.Editor.key_pressed[3] == True:
+        var.Editor.camera[1] += 3
 
 def map_generate():
     var.Editor.terrain = []
@@ -177,13 +266,15 @@ def save_map():
     f.write('Unit\n')
 
     for i in range(len(var.Editor.unit)):
-        f.write(str(var.Editor.unit[i] + '\n'))
+        f.write(str(var.Editor.unit[i]) + '\n')
 
     f.write('End\n')
 
 def load_map(name):
     file_directory = '../Map/' + name + '.desmap'
-    f = open(file_directory, 'r')
+    f = open(file_directory, 'a+')
+    f.seek(0)
+    
     mode = 'Terrain'
 
     file_contents = []
@@ -244,8 +335,16 @@ def load_map(name):
             length = len(temp_str)
             temp_str = temp_str[1:length - 2]
             temp_list = temp_str.split(',')
+            print(temp_list)
 
-            for i in range(len(temp_list)):
-                temp_list[i] = int(temp_list[i])
+            temp_list[0] = int(temp_list[0])
+            temp_list[1] = temp_list[1][2:len(temp_list[1])]
+            temp_list[1] = int(temp_list[1])
+            temp_list[2] = temp_list[2][1:len(temp_list[2]) - 1]
+            temp_list[2] = int(temp_list[2])
+            temp_list[3] = temp_list[3][2:len(temp_list[3])]
+            temp_list[3] = int(temp_list[3])
+            temp_list[4] = temp_list[4][1:len(temp_list[4]) - 1]
+            temp_list[4] = int(temp_list[4])
 
-            var.Editor.unit.append(temp_list)
+            var.Editor.unit.append([temp_list[0], [temp_list[1], temp_list[2]], [temp_list[3], temp_list[4]]])

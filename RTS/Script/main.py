@@ -60,6 +60,10 @@ def image_load():
 
     img.Terrain.tile[101] = pygame.image.load('../Image/Terrain/Grass01.png')
 
+    img.Unit.unit[1001] = pygame.image.load('../Image/Unit/Unit1001.png')
+    img.Unit.unit[1002] = pygame.image.load('../Image/Unit/Unit1002.png')
+    img.Unit.unit[2001] = pygame.image.load('../Image/Unit/Unit2001.png')
+
 def input_handle():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -87,6 +91,11 @@ def input_handle():
             if var.scene == 'editor':
                 key = event.key
                 editor.key_down(key)
+
+        elif event.type == pygame.KEYUP:
+            if var.scene == 'editor':
+                key = event.key
+                editor.key_up(key)
 
 init()
 

@@ -12,3 +12,6 @@ class Level():
 
 class Terrain():
     tile = {}
+
+class Unit():
+    unit = {}

@@ -34,6 +34,12 @@ class Editor():
     map_theme = 'grass'
     map_size = 64
 
+    camera = [0, 0]
+    key_pressed = [False, False, False, False]
+
+    team_mode = 1
+    selected_unit = -1
+
     temp_data = []
 
     terrain = []
