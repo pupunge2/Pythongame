@@ -53,4 +53,6 @@ def mouse_left_up():
 
         elif physics.point_inside_rect_list(mouse[0], mouse[1], UI.custom_button):
             var.scene = 'custom'
+            var.Custom.load_map_name = ''
+            var.Custom.load_map_name_edit = False
 

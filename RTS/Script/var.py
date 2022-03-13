@@ -16,7 +16,9 @@ class Save():
     ]
 
 class Field():
-    pass
+    terrain = []
+    floor = []
+    unit = []
 
 class Player_Ready():
     level_cleared = []
@@ -43,3 +45,7 @@ class Editor():
     terrain = []
     floor = []
     unit = []
+
+class Custom():
+    load_map_name = ''
+    load_map_name_edit = False

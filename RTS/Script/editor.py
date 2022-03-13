@@ -82,6 +82,21 @@ def display():
 
         for i in range(len(var.Editor.unit)):
             var.screen.blit(img.Unit.unit[var.Editor.unit[i][0]], [var.Editor.unit[i][1][0] - var.Editor.unit[i][2][0] // 2 - var.Editor.camera[0] + UI.Main_Editor.field_area[0], var.Editor.unit[i][1][1]- var.Editor.unit[i][2][1] // 2- var.Editor.camera[1] + UI.Main_Editor.field_area[1]])
+            temp_rect = [var.Editor.unit[i][1][0] - var.Editor.camera[0] + UI.Main_Editor.field_area[0] - var.Editor.unit[i][2][0] // 2, var.Editor.unit[i][1][1] - var.Editor.camera[1] + UI.Main_Editor.field_area[1] - var.Editor.unit[i][2][1] // 2, 8, 8]
+            temp_color = ()
+
+            if var.Editor.unit[i][3] == 1:
+                temp_color = (255, 0, 0)
+            elif var.Editor.unit[i][3] == 2:
+                temp_color = (0, 255, 0)
+            elif var.Editor.unit[i][3] == 3:
+                temp_color = (0, 0, 255)
+            elif var.Editor.unit[i][3] == 4:
+                temp_color = (255, 0, 255)
+            else:
+                temp_color = (0, 0, 0)
+
+            pygame.draw.rect(var.screen, temp_color, temp_rect)
 
         pygame.draw.rect(var.screen, const.Color.white, UI.Main_Editor.minimap)
         pygame.draw.rect(var.screen, const.Color.white, UI.Main_Editor.left_bar)
@@ -106,6 +121,8 @@ def display():
     for i in range(4):
         pygame.draw.rect(var.screen, const.Color.black, UI.Upper_Bar.team_button[i], 4)
         var.screen.blit(var.Font.main_1.render(str(i + 1), True, const.Color.black), UI.Upper_Bar.team_text[i])
+    
+    pygame.draw.rect(var.screen, const.Color.blue, UI.Upper_Bar.team_button[var.Editor.team_mode - 1], 4)
 
     # Lower bar
     pygame.draw.rect(var.screen, const.Color.white, UI.Lower_Bar.rect)
@@ -139,8 +156,9 @@ def mouse_left_up():
             var.state = ''
 
         elif physics.point_inside_rect_list(mouse[0], mouse[1], UI.Start.done_button):
-            map_generate()
-            var.state = 'edit'
+            if len(var.Editor.map_name) > 0:
+                map_generate()
+                var.state = 'edit'
 
     elif var.state == 'load':
         if physics.point_inside_rect_list(mouse[0], mouse[1], UI.Start.name):
@@ -153,8 +171,9 @@ def mouse_left_up():
             var.state = ''
 
         elif physics.point_inside_rect_list(mouse[0], mouse[1], UI.Start.done_button):
-            load_map(var.Editor.map_name)
-            var.state = 'edit'
+            if len(var.Editor.map_name) > 0:
+                load_map(var.Editor.map_name)
+                var.state = 'edit'
 
     elif var.state == 'edit':
         if physics.point_inside_rect_list(mouse[0], mouse[1], UI.Upper_Bar.save_button):
@@ -170,6 +189,10 @@ def mouse_left_up():
             var.Editor.camera = [0, 0]
             var.Editor.map_theme = 'grass'
             var.Editor.map_size = 64
+
+        for i in range(4):
+            if physics.point_inside_rect_list(mouse[0], mouse[1], UI.Upper_Bar.team_button[i]):
+                var.Editor.team_mode = i + 1
 
         for i in range(len(const.Editor.unit_list)):
             temp_rect = [UI.Main_Editor.left_bar[0] + 40 * (i % 6), UI.Main_Editor.left_bar[1] + 40 * (i // 6), 40, 40]
@@ -193,7 +216,7 @@ def mouse_left_up():
                         break
                 
                 if unit_add == True:
-                    var.Editor.unit.append([var.Editor.selected_unit, [click_field_pos[0], click_field_pos[1]], [size[0], size[1]]])
+                    var.Editor.unit.append([var.Editor.selected_unit, [click_field_pos[0], click_field_pos[1]], [size[0], size[1]], var.Editor.team_mode])
 
 def key_down(key):
     if var.state == 'start' or var.state == 'load':
@@ -368,5 +391,7 @@ def load_map(name):
             temp_list[3] = int(temp_list[3])
             temp_list[4] = temp_list[4][1:len(temp_list[4]) - 1]
             temp_list[4] = int(temp_list[4])
+            temp_list[5] = temp_list[5][1:len(temp_list[5])]
+            temp_list[5] = int(temp_list[5])
 
-            var.Editor.unit.append([temp_list[0], [temp_list[1], temp_list[2]], [temp_list[3], temp_list[4]]])
+            var.Editor.unit.append([temp_list[0], [temp_list[1], temp_list[2]], [temp_list[3], temp_list[4]], temp_list[5]])

@@ -12,6 +12,7 @@ import saveselect
 import levelselect
 import field
 import editor
+import custom
 
 clock = pygame.time.Clock()
 
@@ -42,6 +43,9 @@ def loop():
 
     elif var.scene == 'editor':
         editor.loop()
+
+    elif var.scene == 'custom':
+        custom.loop()
 
 def set_font():
     var.Font.title = pygame.font.SysFont(None, 60)
@@ -86,11 +90,19 @@ def input_handle():
             elif var.scene == 'editor':
                 if event.button == 1:
                     editor.mouse_left_up()
+
+            elif var.scene == 'custom':
+                if event.button == 1:
+                    custom.mouse_left_up()
         
         elif event.type == pygame.KEYDOWN:
             if var.scene == 'editor':
                 key = event.key
                 editor.key_down(key)
+
+            elif var.scene == 'custom':
+                key = event.key
+                custom.key_down(key)
 
         elif event.type == pygame.KEYUP:
             if var.scene == 'editor':
