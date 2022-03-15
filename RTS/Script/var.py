@@ -3,6 +3,8 @@ FPS = 40
 scene = 'title'
 state = ''
 
+unit_list = {}
+
 class Font():
     title = None
     main_1 = None
@@ -19,6 +21,8 @@ class Field():
     terrain = []
     floor = []
     unit = []
+    num_of_summoned_units = 0
+    camera = [0, 0]
 
 class Player_Ready():
     level_cleared = []
@@ -28,7 +32,12 @@ class Player_Ready():
     upgrade = []
 
 class Player():
-    pass
+    selected_unit = []
+    mouse_left_down = [0, 0]
+    mouse_move_position = [0, 0]
+    mouse_left_up = [0, 0]
+    mouse_right_up = [0, 0]
+    mouse_press = False
 
 class Editor():
     map_name_edit = False

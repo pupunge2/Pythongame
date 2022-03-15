@@ -50,6 +50,7 @@ def mouse_left_up():
                 var.state = ''
 
 def load_map():
+    var.Field.num_of_summoned_units = 0
     temp_dir = '../Map/' + var.Custom.load_map_name + '.desmap'
 
     f = open(temp_dir, 'a+')
@@ -127,7 +128,21 @@ def load_map():
             temp_list[5] = temp_list[5][1:len(temp_list[5])]
             temp_list[5] = int(temp_list[5])
 
-            var.Field.unit.append([temp_list[0], [temp_list[1], temp_list[2]], [temp_list[3], temp_list[4]], temp_list[5]])
+            var.Field.num_of_summoned_units += 1
+            var.Field.unit.append({'number' : var.Field.num_of_summoned_units,
+                                   'ID' : temp_list[0],
+                                   'name' : var.unit_list[temp_list[0]]['name'],
+                                   'element' : var.unit_list[temp_list[0]]['element'],
+                                   'type' : var.unit_list[temp_list[0]]['type'],
+                                   'weapon' : var.unit_list[temp_list[0]]['weapon'],
+                                   'attack' : var.unit_list[temp_list[0]]['attack'],
+                                   'health' : var.unit_list[temp_list[0]]['health'],
+                                   'speed' : var.unit_list[temp_list[0]]['speed'],
+                                   'ability' : var.unit_list[temp_list[0]]['ability'],
+                                   'position' : [temp_list[1], temp_list[2]],
+                                   'size' : [temp_list[3], temp_list[4]],
+                                   'move' : [False, [0, 0], [0, 0]],
+                                   'team' : temp_list[5]})
 
     return True
 

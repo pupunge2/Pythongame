@@ -261,16 +261,20 @@ def key_up(key):
 
 def camera_move():
     if var.Editor.key_pressed[0] == True:
-        var.Editor.camera[1] -= 3
+        if var.Editor.camera[1] > 0:
+            var.Editor.camera[1] -= 3
 
     if var.Editor.key_pressed[1] == True:
-        var.Editor.camera[0] -= 3
+        if var.Editor.camera[0] > 0:
+            var.Editor.camera[0] -= 3
 
     if var.Editor.key_pressed[2] == True:
-        var.Editor.camera[0] += 3
+        if var.Editor.camera[0] < 40 * 64 - 1280:
+            var.Editor.camera[0] += 3
 
     if var.Editor.key_pressed[3] == True:
-        var.Editor.camera[1] += 3
+        if var.Editor.camera[1] < 40 * 64 - 720:
+            var.Editor.camera[1] += 3
 
 def map_generate():
     var.Editor.terrain = []
