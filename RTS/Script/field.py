@@ -101,7 +101,7 @@ def unit_move_set():
     for i in range(len(var.Player.selected_unit)):
         temp_index = var.Player.selected_unit[i]
         var.Field.unit[temp_index]['move'][0] = True
-        temp_vector = [var.Player.mouse_right_up[0]- var.Field.unit[temp_index]['position'][0], var.Player.mouse_right_up[1] - var.Field.unit[temp_index]['position'][1]]
+        temp_vector = [var.Player.mouse_right_up[0] - var.Field.unit[temp_index]['position'][0], var.Player.mouse_right_up[1] - var.Field.unit[temp_index]['position'][1]]
         temp_vector = physics.vector_normalize(temp_vector)
         temp_vector = physics.vector_multiple_scalar(temp_vector, var.Field.unit[temp_index]['speed'])
         var.Field.unit[temp_index]['move'][1] = [temp_vector[0], temp_vector[1]]
