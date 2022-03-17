@@ -47,9 +47,9 @@ class Editor():
 
     camera = [0, 0]
     key_pressed = [False, False, False, False]
-
     team_mode = 1
     selected_unit = -1
+    unit_delete_mode = False
 
     terrain = []
     floor = []

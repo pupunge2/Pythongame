@@ -1,3 +1,4 @@
+from pydoc import cli
 import var
 import img
 import const
@@ -13,7 +14,8 @@ class UI():
         load_button = [40, 0, 40, 40]
         save_button = [80, 0, 40, 40]
         team_button = [[120, 0, 40, 40], [160, 0, 40, 40], [200, 0, 40, 40], [240, 0, 40, 40]]
-        close_button = [280, 0, 40, 40]
+        delete_button = [280, 0, 40, 40]
+        close_button = [320, 0, 40, 40]
         team_text = [[132, 12], [172, 12], [212, 12], [252, 12]]
         exit_button = [1240, 0, 40, 40]
 
@@ -115,8 +117,12 @@ def display():
     var.screen.blit(img.Button.new_map, UI.Upper_Bar.new_button[:2])
     var.screen.blit(img.Button.save, UI.Upper_Bar.save_button[:2])
     var.screen.blit(img.Button.load, UI.Upper_Bar.load_button[:2])
+    var.screen.blit(img.Button.delete, UI.Upper_Bar.delete_button[:2])
     var.screen.blit(img.Button.exit, UI.Upper_Bar.close_button[:2])
     var.screen.blit(img.Button.exit, UI.Upper_Bar.exit_button[:2])
+
+    if var.Editor.unit_delete_mode == True:
+        pygame.draw.rect(var.screen, const.Color.green, UI.Upper_Bar.delete_button, 5)
 
     for i in range(4):
         pygame.draw.rect(var.screen, const.Color.black, UI.Upper_Bar.team_button[i], 4)
@@ -190,6 +196,12 @@ def mouse_left_up():
             var.Editor.map_theme = 'grass'
             var.Editor.map_size = 64
 
+        elif physics.point_inside_rect_list(mouse[0], mouse[1], UI.Upper_Bar.delete_button):
+            if var.Editor.unit_delete_mode == True:
+                var.Editor.unit_delete_mode = False
+            else:
+                var.Editor.unit_delete_mode = True
+
         for i in range(4):
             if physics.point_inside_rect_list(mouse[0], mouse[1], UI.Upper_Bar.team_button[i]):
                 var.Editor.team_mode = i + 1
@@ -203,7 +215,7 @@ def mouse_left_up():
         if physics.point_inside_rect_list(mouse[0], mouse[1], UI.Main_Editor.field_area):
             click_field_pos = [mouse[0] - UI.Main_Editor.field_area[0] + var.Editor.camera[0], mouse[1] - UI.Main_Editor.field_area[1] + var.Editor.camera[1]]
 
-            if var.Editor.selected_unit != -1:
+            if var.Editor.selected_unit != -1 and var.Editor.unit_delete_mode == False:
                 size = [const.Unit.size[var.Editor.selected_unit][0], const.Unit.size[var.Editor.selected_unit][1]]
                 unit_add = True
 
@@ -217,6 +229,15 @@ def mouse_left_up():
                 
                 if unit_add == True:
                     var.Editor.unit.append([var.Editor.selected_unit, [click_field_pos[0], click_field_pos[1]], [size[0], size[1]], var.Editor.team_mode])
+
+            elif var.Editor.unit_delete_mode == True:
+                for i in range(len(var.Editor.unit)):
+                    top_left = [var.Editor.unit[i][1][0] - var.Editor.unit[i][2][0] // 2, var.Editor.unit[i][1][1] - var.Editor.unit[i][2][1] // 2]
+                    rect = [var.Editor.unit[i][2][0], var.Editor.unit[i][2][1]]
+                    
+                    if physics.point_inside_rect(click_field_pos[0], click_field_pos[1], top_left[0], top_left[1], rect[0], rect[1]):
+                        var.Editor.unit.pop(i)
+                        break
 
 def key_down(key):
     if var.state == 'start' or var.state == 'load':

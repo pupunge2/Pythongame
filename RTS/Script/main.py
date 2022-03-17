@@ -58,6 +58,7 @@ def image_load():
     img.Button.load = pygame.image.load('../Image/Button/Load.png')
     img.Button.exit = pygame.image.load('../Image/Button/Exit.png')
     img.Button.done = pygame.image.load('../Image/Button/Done.png')
+    img.Button.delete = pygame.image.load('../Image/Button/Delete.png')
 
     img.Level.cleared = pygame.image.load('../Image/Level/LevelCleared.png')
     img.Level.unlock = pygame.image.load('../Image/Level/LevelUnlock.png')

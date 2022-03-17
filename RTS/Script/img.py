@@ -4,6 +4,7 @@ class Button():
     load = None
     exit = None
     done = None
+    delete = None
 
 class Level():
     lock = None
